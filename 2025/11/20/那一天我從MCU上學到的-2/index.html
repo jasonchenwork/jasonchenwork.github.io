@@ -6,15 +6,15 @@
   
   <title>那一天我從MCU上學到的(2) | Jason&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="今天來講過去我們部門遇到的一些問題，有一天我們的產品在特定的操作下出現不預期的結果，我簡單說明我們這產品的流程:當擷取硬體ADC的值後程式會先將ADC資料做簡單的濾波器在往下一步計算後輸出給主機端，其中的計算我簡化為:當sum(adc[i])與sum(cnt[i])的值破萬時，result的值異常，我們找數位工程師討論結果為這顆MCU的除法器是使用橢圓演算法實作但當輸入的數值過大時會有問題，主要緣">
+  <meta name="description" content="今天來講過去我們部門遇到的一些問題，有一天我們的產品在特定的操作下出現不預期的結果，我簡單說明我們這產品的流程:當擷取硬體ADC的值後程式會先將ADC資料做簡單的濾波器在往下一步計算後輸出給主機端，其中的計算我簡化為:result&#x3D;(adc[i])&#x2F;sum(cnt[i])，當sum(adc[i])與sum(cnt[i])的值破萬時，result的值異常，我們找數位工程師討論結果">
 <meta property="og:type" content="article">
 <meta property="og:title" content="那一天我從MCU上學到的(2)">
 <meta property="og:url" content="https://jasonchenwork.github.io/2025/11/20/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-2/index.html">
 <meta property="og:site_name" content="Jason&#39;s Blog">
-<meta property="og:description" content="今天來講過去我們部門遇到的一些問題，有一天我們的產品在特定的操作下出現不預期的結果，我簡單說明我們這產品的流程:當擷取硬體ADC的值後程式會先將ADC資料做簡單的濾波器在往下一步計算後輸出給主機端，其中的計算我簡化為:當sum(adc[i])與sum(cnt[i])的值破萬時，result的值異常，我們找數位工程師討論結果為這顆MCU的除法器是使用橢圓演算法實作但當輸入的數值過大時會有問題，主要緣">
+<meta property="og:description" content="今天來講過去我們部門遇到的一些問題，有一天我們的產品在特定的操作下出現不預期的結果，我簡單說明我們這產品的流程:當擷取硬體ADC的值後程式會先將ADC資料做簡單的濾波器在往下一步計算後輸出給主機端，其中的計算我簡化為:result&#x3D;(adc[i])&#x2F;sum(cnt[i])，當sum(adc[i])與sum(cnt[i])的值破萬時，result的值異常，我們找數位工程師討論結果">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2025-11-20T01:51:38.000Z">
-<meta property="article:modified_time" content="2025-11-20T04:59:16.412Z">
+<meta property="article:modified_time" content="2025-11-20T05:01:13.080Z">
 <meta property="article:author" content="Jason Chen">
 <meta property="article:tag" content="那一天我從MCU上學到的">
 <meta name="twitter:card" content="summary">
@@ -96,12 +96,12 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>今天來講過去我們部門遇到的一些問題，有一天我們的產品在特定的操作下出現不預期的結果，我簡單說明我們這產品的流程:當擷取硬體ADC的值後程式會先將ADC資料做簡單的濾波器在往下一步計算後輸出給主機端，其中的計算我簡化為:當sum(adc[i])與sum(cnt[i])的值破萬時，result的值異常，我們找數位工程師討論結果為這顆MCU的除法器是使用橢圓演算法實作但當輸入的數值過大時會有問題，主要緣由是此算法是用近似疊代的方式逼近，當數值過大時會有無法收斂的情況。當我聽到時傻眼，如果有隱患的問題怎不寫入IC的SPEC中，因為這種問題很難發現到，除厝過程中我們只能一步一步地將每個函數都拆解然後鎖定每步的可能性。但對我們來說是要如何解決問題，最簡單粗暴的方式是當除數與被除數同時大於門檻值時就都同時往右位移想辦法讓除法器能夠收斂而非發散狀態。</p>
+        <p>今天來講過去我們部門遇到的一些問題，有一天我們的產品在特定的操作下出現不預期的結果，我簡單說明我們這產品的流程:當擷取硬體ADC的值後程式會先將ADC資料做簡單的濾波器在往下一步計算後輸出給主機端，其中的計算我簡化為:result&#x3D;(adc[i])&#x2F;sum(cnt[i])，當sum(adc[i])與sum(cnt[i])的值破萬時，result的值異常，我們找數位工程師討論結果為這顆MCU的除法器是使用橢圓演算法實作但當輸入的數值過大時會有問題，主要緣由是此算法是用近似疊代的方式逼近，當數值過大時會有無法收斂的情況。當我聽到時傻眼，如果有隱患的問題怎不寫入IC的SPEC中，因為這種問題很難發現到，除厝過程中我們只能一步一步地將每個函數都拆解然後鎖定每步的可能性。但對我們來說是要如何解決問題，最簡單粗暴的方式是當除數與被除數同時大於門檻值時就都同時往右位移想辦法讓除法器能夠收斂而非發散狀態。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/11/20/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-2/" data-id="cuid1aRzf0OH4f8mQLJflmafV" data-title="那一天我從MCU上學到的(2)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/11/20/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-2/" data-id="cuidxwn0-Y5umx8vhEd3tTtL1" data-title="那一天我從MCU上學到的(2)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
