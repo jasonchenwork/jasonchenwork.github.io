@@ -71,6 +71,47 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-那一天我從MCU上學到的-3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/11/21/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-3/" class="article-date">
+  <time class="dt-published" datetime="2025-11-21T09:01:02.000Z" itemprop="datePublished">2025-11-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/11/21/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-3/">那一天我從MCU上學到的(3)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>上次的issue是數位指令本身的限制，<strong>嚴格說起來不是BUG而是需要在DATASHEET中寫出的限制條件</strong>。<br>這次來說另一種問題，首先敘述一下從客戶端回饋的問題:我司產品在低溫到高溫的過程中功能失效。<br>一開始收到此issue時，第一件事就是想辦法復現客戶的問題啊，不過我們不斷反覆測試後都無法成功復現客戶所遇見的問題，因此我們將此問題轉換成是否有良率問題，不是每一個產品都會發生而是機率性發生在NG品中，後來我們就跟客戶協調是否能將有問題的產品退到我司來排查問題。<br>當我們一拿到客戶產品後我立馬就能復現此問題，能夠復現問題後就可以開始做實驗拉。<br>此時我的大主管要求我修改程式中參數，他猜想靠調整參數就可以解決，當我測試一兩次就發現這不是能靠調整參數的問題，在這情況下我們的產品完全無反應，此時我猜想在這種情況我們的產品是不是能活動，因此修改程式讓程式不管何時都會發送訊息給主機，以此判斷我們的產品是否能此情況下活動。結果不出我預測當我們NG品在低溫下就停止活動了!<br><strong>身為一個工程師當然不能只拿一個程式行為來說話</strong>，此時我使用示波器量測我們產品的行為，因為我們產品在活動時一定會打訊號出來，想當然不出所料低溫時我們的產品根本量不到訊號。最後我將我排查的結果提報給我大主管，而我大主管似乎沒能理解我做的實驗目的與結果，當下只給我下達將程式中某個參數改大一點後去測試。此時我心中只想說無腦服從他即便我花一整天解釋這方向錯誤但我的大主管很高的機率會告知我說:『你改一下參數會死嗎?』當時我只是一介菜鳥工程師所說的話一點都沒有份量即便我做了一堆實驗數據。就在此時剛好有一位資深工程師聽到我跟大主管的對話，立馬跳出來幫忙解釋，我看這位資深工程師講到快跟我們大主管吵架一樣後，終於理解產品可能的問題，之後就是請數位工程師跟我們一起排查問題，配合數位工程師寫一堆測試pattern與量測訊號，最後終於能定位產品中的某的電路因FAB良率問題有可以使我們的產品直接停止內部CLK。通常DEBUG越痛苦越能牢記在大腦，<strong>即便過這麼多年我還是記得當時的情況。每個公司文化都不一樣，沒有好跟壞，我們要做的是去適應去融入各種文化，而非抱怨各種事情，這樣才能使我們更強大!</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jasonchenwork.github.io/2025/11/21/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-3/" data-id="cuidEMRaeN8qNuaaqvd8hi5AC" data-title="那一天我從MCU上學到的(3)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84/" rel="tag">那一天我從MCU上學到的</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-那一天我從MCU上學到的-2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/11/20/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-2/" class="article-date">
@@ -98,7 +139,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/11/20/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-2/" data-id="cuidE16Qv-MAB-co5h34PhOR5" data-title="那一天我從MCU上學到的(2)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/11/20/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-2/" data-id="cuidHF5sjpOzK2r-peG_neU8d" data-title="那一天我從MCU上學到的(2)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -141,7 +182,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/11/17/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-1/" data-id="cuid8_lF_53yFdkGm_YQ1ahqY" data-title="那一天我從MCU上學到的(1)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/11/17/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-1/" data-id="cuidJVMlxzFIkBDqp15ary2YJ" data-title="那一天我從MCU上學到的(1)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -198,6 +239,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2025/11/21/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-3/">那一天我從MCU上學到的(3)</a>
+          </li>
         
           <li>
             <a href="/2025/11/20/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-2/">那一天我從MCU上學到的(2)</a>
