@@ -71,6 +71,47 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-那一天我從MCU上學到的-4" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/12/01/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-4/" class="article-date">
+  <time class="dt-published" datetime="2025-12-01T02:06:11.000Z" itemprop="datePublished">2025-12-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/12/01/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-4/">那一天我從MCU上學到的(4)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>今天介紹MCU內部記憶體架構，目前我遇到的MCU記憶體架構主要可分為兩種:有PRAM，無PRAM。有PRAM架構的為MCU上電後會透過ROM CODE 或是硬體從FLASH般CODE至PRAM，最後在PRAM上執行程序。無PRAM架構的MCU無須以上上電流程因為MCU可以直接在FLASH上執行程序。現今我們家用電腦架構就是與有PRAM架構的MCU類似，主機上電後會從SD CARD or DISK中搬運OS至RAM中執行，而多數低階MCU尤其是8-bit MCU無PRAM而直接在FLASH上執行。為什麼會有這兩種不同的架構呢?主因是IC製程與成本因素所導致的。多一個PRAM空間會影響整體產品成本問題。既然能不需要PRAM則能省則省。<br>對IC設計公司來說產品面積越小越有競爭力，一片晶圓的面積是固定的，但能在一片晶圓中製作出多少顆DIE，全靠各家公司能力，如果同樣的產品你能在這片晶圓多別人1000顆DIE無疑是你的產品擁有更低成本的優勢，這也是多數IC設計公司在比拚的地方。<br>ROM:是不可以改變的，在晶圓製造時就已經決定好的<br>PRAM: 存放程序執行的記憶體空間<br>DRAM: 存放資料的記憶體空間<br>FLASH: 存放程式碼的空間<br>PS:現行許多架構會將PRAM與DRAM放置在同一個空間中<br><img src="https://jasonchenwork.github.io/MCUmemoryar.jpg" alt="enter image description here"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jasonchenwork.github.io/2025/12/01/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-4/" data-id="cuidCDHrOIpWxSZUqUp4os4fN" data-title="那一天我從MCU上學到的(4)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84/" rel="tag">那一天我從MCU上學到的</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-那一天我從MCU上學到的-3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/11/21/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-3/" class="article-date">
@@ -228,7 +269,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">彙整</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/11/">十一月 2025</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/12/">十二月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/11/">十一月 2025</a></li></ul>
     </div>
   </div>
 
@@ -239,6 +280,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2025/12/01/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-4/">那一天我從MCU上學到的(4)</a>
+          </li>
         
           <li>
             <a href="/2025/11/21/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-3/">那一天我從MCU上學到的(3)</a>
