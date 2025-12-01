@@ -93,7 +93,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>今天介紹MCU內部記憶體架構，目前我遇到的MCU記憶體架構主要可分為兩種:有PRAM，無PRAM。有PRAM架構的為MCU上電後會透過ROM CODE 或是硬體從FLASH般CODE至PRAM，最後在PRAM上執行程序。無PRAM架構的MCU無須以上上電流程因為MCU可以直接在FLASH上執行程序。現今我們家用電腦架構就是與有PRAM架構的MCU類似，主機上電後會從SD CARD or DISK中搬運OS至RAM中執行，而多數低階MCU尤其是8-bit MCU無PRAM而直接在FLASH上執行。為什麼會有這兩種不同的架構呢?主因是IC製程與成本因素所導致的。多一個PRAM空間會影響整體產品成本問題。既然能不需要PRAM則能省則省。<br>對IC設計公司來說產品面積越小越有競爭力，一片晶圓的面積是固定的，但能在一片晶圓中製作出多少顆DIE，全靠各家公司能力，如果同樣的產品你能在這片晶圓多別人1000顆DIE無疑是你的產品擁有更低成本的優勢，這也是多數IC設計公司在比拚的地方。<br>ROM:是不可以改變的，在晶圓製造時就已經決定好的<br>PRAM: 存放程序執行的記憶體空間<br>DRAM: 存放資料的記憶體空間<br>FLASH: 存放程式碼的空間<br>PS:現行許多架構會將PRAM與DRAM放置在同一個空間中<br><img src="/MCUmemoryar.jpg"></p>
+        <p>今天介紹MCU內部記憶體架構，目前我遇到的MCU記憶體架構主要可分為兩種:有PRAM，無PRAM。有PRAM架構的為MCU上電後會透過ROM CODE 或是硬體從FLASH般CODE至PRAM，最後在PRAM上執行程序。無PRAM架構的MCU無須以上上電流程因為MCU可以直接在FLASH上執行程序。現今我們家用電腦架構就是與有PRAM架構的MCU類似，主機上電後會從SD CARD or DISK中搬運OS至RAM中執行，而多數低階MCU尤其是8-bit MCU無PRAM而直接在FLASH上執行。為什麼會有這兩種不同的架構呢?主因是IC製程與成本因素所導致的。多一個PRAM空間會影響整體產品成本問題。既然能不需要PRAM則能省則省。<br>對IC設計公司來說產品面積越小越有競爭力，一片晶圓的面積是固定的，但能在一片晶圓中製作出多少顆DIE，全靠各家公司能力，如果同樣的產品你能在這片晶圓多別人1000顆DIE無疑是你的產品擁有更低成本的優勢，這也是多數IC設計公司在比拚的地方。<br>ROM:是不可以改變的，在晶圓製造時就已經決定好的<br>PRAM: 存放程序執行的記憶體空間<br>DRAM: 存放資料的記憶體空間<br>FLASH: 存放程式碼的空間<br>PS:現行許多架構會將PRAM與DRAM放置在同一個空間中<br><img src="/images/MCUmemoryar.jpg" alt=""></p>
 
       
     </div>
