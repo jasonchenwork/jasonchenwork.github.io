@@ -93,12 +93,12 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>今天我要講曾經在某專案上遇到我們的產品受到周邊元件發出的訊號影響到我們的產品導致我們產品行為異常。<br>收到issue的第一件事就是分析問題，要如何分析問題?通常是透過復現問題後錄製log。接下來透過log排查問題根源。目前這個問題歸類為我們產品抗雜訊能力不佳，但需要用FW硬解。首先解釋一下我們的產品會取樣N筆ADC資料後平均成一筆資料輸出資料給主機。正常情況我們獲得的資料是平坦，但受到干擾後訊號的變化會很大導致我們最後輸出的結果會不穩定，在大多情況我們使用median filter可以有效改善此問題，這median filter的使用情境只能在大多數的資料為對的情況，如果多數資料是受到干擾則無法有效。在解這問題時我嘗試使用許多FIR濾波器都無法有效改善。主因是這個雜訊源是混頻訊號，前前後後透過各種現成演算法都無法改善問題，最後我想到使用Sobel filter區分是否為stable or unstable 資料<br>最後只留下stable的資料，如果最後stable的資訊量過低則直接丟棄這一回合的資料重新進行擷取ADC。此時我覺得有學以致用的感覺以前在大學研究所的知識能使用到。這已經是好多年前的專案即便到現在我還是記憶猶新，憑自己能力處理完成一件事情是令人高興的!<br><img src="/images/noramlADCvsAbnormalADC.jpg" alt="normal vs abnoraml"></p>
+        <p>今天我要講曾經在某專案上遇到我們的產品受到周邊元件發出的訊號影響到我們的產品導致我們產品行為異常。<br>收到issue的第一件事就是分析問題，要如何分析問題?通常是透過復現問題後錄製log。接下來透過log排查問題根源。目前這個問題歸類為我們產品抗雜訊能力不佳，但需要用FW硬解。首先解釋一下我們的產品會取樣N筆ADC資料後平均成一筆資料輸出資料給主機。正常情況我們獲得的資料是平坦，但受到干擾後訊號的變化會很大導致我們最後輸出的結果會不穩定，在大多情況我們使用median filter可以有效改善此問題，這median filter的使用情境只能在大多數的資料為對的情況，如果多數資料是受到干擾則無法有效。在解這問題時我嘗試使用許多FIR濾波器都無法有效改善。主因是這個雜訊源是混頻訊號，前前後後透過各種現成演算法都無法改善問題，最後我想到使用Sobel filter區分是否為stable or unstable 資料。最後只留下stable的資料，如果最後stable的資訊量過低則直接丟棄這一回合的資料重新進行擷取ADC。此時我覺得有學以致用的感覺以前在大學研究所的知識能使用到。這已經是好多年前的專案即便到現在我還是記憶猶新，憑自己能力處理完成一件事情是令人高興的!<br><img src="/images/noramlADCvsAbnormalADC.jpg" alt="normal vs abnoraml"></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-7/" data-id="cuidgK8L-F0uWF6rWZiJ1vx89" data-title="那一天我從MCU上學到的(7)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-7/" data-id="cuidPcu4f5WxSVbJqU8tGJxpA" data-title="那一天我從MCU上學到的(7)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -139,7 +139,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-6/" data-id="cuidFLhFnSCuhpmX4Id8k1ZmW" data-title="那一天我從MCU上學到的(6)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-6/" data-id="cuidgAPi3b-OnIgR3DjPas0D0" data-title="那一天我從MCU上學到的(6)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -190,7 +190,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-5/" data-id="cuidDDW2TlYADlAGPCJKwdtr7" data-title="那一天我從MCU上學到的(5)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-5/" data-id="cuid0swU97MwiSNU6OPFxeWBM" data-title="那一天我從MCU上學到的(5)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -232,7 +232,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/01/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-4/" data-id="cuidqaDHj7c3Nl-pxKWRejm1I" data-title="那一天我從MCU上學到的(4)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/01/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-4/" data-id="cuidSV6fLVfMY1sy9BqirJBkd" data-title="那一天我從MCU上學到的(4)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -273,7 +273,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/11/21/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-3/" data-id="cuid6AHGMpq-LQ_7B-5sbQKbE" data-title="那一天我從MCU上學到的(3)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/11/21/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-3/" data-id="cuidvjPCjLnXfI-T-ashC85E7" data-title="那一天我從MCU上學到的(3)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -314,7 +314,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/11/20/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-2/" data-id="cuidtqSdilNHMqogc70SBLUJ-" data-title="那一天我從MCU上學到的(2)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/11/20/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-2/" data-id="cuidMjiD_qnDaBSi4H8BTD462" data-title="那一天我從MCU上學到的(2)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -357,7 +357,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/11/17/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-1/" data-id="cuid98ePxY7nH_odxRfzKwAEW" data-title="那一天我從MCU上學到的(1)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/11/17/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-1/" data-id="cuidKKkgdJS-FR-c-ZYQDudWk" data-title="那一天我從MCU上學到的(1)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
