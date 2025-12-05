@@ -93,12 +93,12 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>今天講一些曾經遇到奇奇怪怪的BUG，我記得突然有一天我被分派到開發全新的產品，基本上要在IDE上開啟全新的空白專案，要從最一開始實作BootLoader與初始化硬體，先Load OSC&#x2F;Votalge trim code from OTP，再接下來設定通訊界面(ex:IIC&#x2F;SPI&#x2F;UART)，最後set STACK address等等。因為要從OTP讀取資料因此我還需要規劃OTP的空間，我簡單的設計OTP規劃將每一個表格可以燒入3次為上限，在OTP中用一個DICT紀錄每個TABLE目前燒錄第幾次，如果我將TABLE1寫入第一次完成後我會將DICT中TABLE1寫一個KEY(此KEY非0x00並且非0xFF防止被誤判)，如果現在我要燒第二次TABEL2時我會先將TABLE1_1st寫為0，然後在填TABLE1_2nd資訊，這樣設定的原因為OTP出廠為0xFF我們只能將bit1寫為bit0因此用0x00與0xFF代表此空間無效標記。當然我們將TABLE中資料讀取完成後可以放一個checksum來確保資料的正確性。這是非常簡易簡單方式規劃OTP空間。<br><img src="/images/OTPspace.JPG" alt="OTP space"><br>處理完BootLoader與初始化硬體佔整體進度20%，主要還有main app的部分要完成，這是全新的專案對當時的我來說有很多東西都是邊做邊學。不意外就開始採BUG，第一個問題是我發現某個ISR只能觸發一次，無法觸發第二次之後的問題。為此我還詢問數位RD這問題，我記得當時那位RD回應我說測試部門的已經測試完成沒問題應該是我的問題，所以我又自己跑去問測試部門的member，我來記得我一開始找他們時他們還很不友善可是這問題對他們來說是質疑他們的立場，當時我還只是個出社會幾年的小工程師而已。要如何處理這問題當然就是必須要用他們的語言來溝通，也因此我需要專門為這問題寫一個test pattern給他們讓大家知道不是我整個系統問題而是真的可能是硬體設計上的BUG!我們用我的test pattern跑模擬可以發現進入這個ISR後雖然我們pattern有清除ISR狀態但硬體線路錯誤導致我無法清除ISR狀態，也因此我根本無法清除ISR狀態就不可能讓這ISR再次觸發。其實這問題很簡單但最大的問題是如何通溝不同部門的人。</p>
+        <p>今天講一些曾經遇到奇奇怪怪的BUG，我記得突然有一天我被分派到開發全新的產品，基本上要在IDE上開啟全新的空白專案，要從最一開始實作BootLoader與初始化硬體，先Load OSC/Votalge trim code from OTP，再接下來設定通訊界面(ex:IIC/SPI/UART)，最後set STACK address等等。因為要從OTP讀取資料因此我還需要規劃OTP的空間，我簡單的設計OTP規劃將每一個表格可以燒入3次為上限，在OTP中用一個DICT紀錄每個TABLE目前燒錄第幾次，如果我將TABLE1寫入第一次完成後我會將DICT中TABLE1寫一個KEY(此KEY非0x00並且非0xFF防止被誤判)，如果現在我要燒第二次TABEL2時我會先將TABLE1_1st寫為0，然後在填TABLE1_2nd資訊，這樣設定的原因為OTP出廠為0xFF我們只能將bit1寫為bit0因此用0x00與0xFF代表此空間無效標記。當然我們將TABLE中資料讀取完成後可以放一個checksum來確保資料的正確性。這是非常簡易簡單方式規劃OTP空間。<br><img src="/images/OTPspace.JPG" alt="OTP space"><br>處理完BootLoader與初始化硬體佔整體進度20%，主要還有main app的部分要完成，這是全新的專案對當時的我來說有很多東西都是邊做邊學。不意外就開始採BUG，第一個問題是我發現某個ISR只能觸發一次，無法觸發第二次之後的問題。為此我還詢問數位RD這問題，我記得當時那位RD回應我說測試部門的已經測試完成沒問題應該是我的問題，所以我又自己跑去問測試部門的member，我來記得我一開始找他們時他們還很不友善可是這問題對他們來說是質疑他們的立場，當時我還只是個出社會幾年的小工程師而已。要如何處理這問題當然就是必須要用他們的語言來溝通，也因此我需要專門為這問題寫一個test pattern給他們讓大家知道不是我整個系統問題而是真的可能是硬體設計上的BUG!我們用我的test pattern跑模擬可以發現進入這個ISR後雖然我們pattern有清除ISR狀態但硬體線路錯誤導致我無法清除ISR狀態，也因此我根本無法清除ISR狀態就不可能讓這ISR再次觸發。其實這問題很簡單但最大的問題是如何通溝不同部門的人。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/05/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-9/" data-id="cuidbI6N22E92C2XcuShuaYd7" data-title="那一天我從MCU上學到的(9)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/05/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-9/" data-id="cuidjSCAriXQKgrSqLcw05zBa" data-title="那一天我從MCU上學到的(9)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -139,7 +139,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-8/" data-id="cuidzJBXGphsWxSNvGUvZZBFK" data-title="那一天我從MCU上學到的(8)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-8/" data-id="cuidMwk5YXEKPDTBfXdncDWM2" data-title="那一天我從MCU上學到的(8)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -180,7 +180,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-7/" data-id="cuidJpIIaOXAa7dJLmv73Ohzc" data-title="那一天我從MCU上學到的(7)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-7/" data-id="cuidk88aq0-tc3Nv9f8G5Fw_9" data-title="那一天我從MCU上學到的(7)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -221,7 +221,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-6/" data-id="cuid9M85SGcDjIso2jwfeVfk7" data-title="那一天我從MCU上學到的(6)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-6/" data-id="cuidO11tGqiMm9hMbkvnYmUR-" data-title="那一天我從MCU上學到的(6)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -257,9 +257,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>今天要來介紹一些FW理架構與簡單的實作出工具，對於大多數公司的IC產品對於客戶需求的差異都會想要最小的改動FW，畢竟如果每一次都需要針對客戶需求修改程式要付出的風險很大，公司也希望自家的產品可以交由FAE只修改參數來滿足客戶需求。因此對於FW端需求將各種參數提供給FAE或是客戶修改，在FW的程式碼簡單的實作方法就是將你要釋出的參數定義在輸出bin檔中固定位址。<br><img src="/images/FWparameterarea.jpg" alt="parameter area in main app"><br>以下是FW端簡單的實作</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> FW_VER 0x1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> projectname <span class="string">&quot;1234&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> other <span class="string">&quot;321&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INIT_PARAMETER1 100</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INIT_PARAMETER2 200</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> FWver;</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> projectname[<span class="number">32</span>];</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> other[<span class="number">16</span>];</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> parameter1;</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> parameter2;</span><br><span class="line">&#125;FWparameter;</span><br><span class="line"></span><br><span class="line">FWparameter code fwparameter _at_ <span class="number">0x300</span> = &#123;FW_VER,projectname,other,INIT_PARAMETER1,INIT_PARAMETER2&#125;;</span><br></pre></td></tr></table></figure>
-<p>我將參數的位址定義在0x300<br>接下來我要設計一套工具可以修改bin固定的位置，並且我希望UI不需要每次的改動，若要要改動只改動工具中所需要文件，這樣就可以最大化利用UI工具畢竟FW端的參數會依據客戶們的需求不斷更新，如果將描述的部分放在UI工具中會導致當FW端修改新增某的參數時都需要同步修改，如果我們能在開發時就將此需求明確表達UI工具能最少可能的改動，可提升工具部門的效率，但現實層面跨部門的溝通很困難，常常都是各個部門各自為政，你明知道有更好的想法但迫於各種溝通成本導致默不出聲。這也是我想開始寫一些心得分享給大家的動機。<br>回到設計工具程式上，我需要一個主程式專門負責各參數呈現和一份文件能描述參數<br><img src="/images/parameterflow.jpg" alt="TOOL FLOW"></p>
+        <p>今天要來介紹一些FW理架構與簡單的實作出工具，對於大多數公司的IC產品對於客戶需求的差異都會想要最小的改動FW，畢竟如果每一次都需要針對客戶需求修改程式要付出的風險很大，公司也希望自家的產品可以交由FAE只修改參數來滿足客戶需求。因此對於FW端需求將各種參數提供給FAE或是客戶修改，在FW的程式碼簡單的實作方法就是將你要釋出的參數定義在輸出bin檔中固定位址。<br><img src="/images/FWparameterarea.jpg" alt="parameter area in main app"><br>以下是FW端簡單的實作<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> FW_VER 0x1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> projectname <span class="string">&quot;1234&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> other <span class="string">&quot;321&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INIT_PARAMETER1 100</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INIT_PARAMETER2 200</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> FWver;</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> projectname[<span class="number">32</span>];</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> other[<span class="number">16</span>];</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> parameter1;</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> parameter2;</span><br><span class="line">&#125;FWparameter;</span><br><span class="line"></span><br><span class="line">FWparameter code fwparameter _at_ <span class="number">0x300</span> = &#123;FW_VER,projectname,other,INIT_PARAMETER1,INIT_PARAMETER2&#125;;</span><br></pre></td></tr></table></figure><br>我將參數的位址定義在0x300<br>接下來我要設計一套工具可以修改bin固定的位置，並且我希望UI不需要每次的改動，若要要改動只改動工具中所需要文件，這樣就可以最大化利用UI工具畢竟FW端的參數會依據客戶們的需求不斷更新，如果將描述的部分放在UI工具中會導致當FW端修改新增某的參數時都需要同步修改，如果我們能在開發時就將此需求明確表達UI工具能最少可能的改動，可提升工具部門的效率，但現實層面跨部門的溝通很困難，常常都是各個部門各自為政，你明知道有更好的想法但迫於各種溝通成本導致默不出聲。這也是我想開始寫一些心得分享給大家的動機。<br>回到設計工具程式上，我需要一個主程式專門負責各參數呈現和一份文件能描述參數<br><img src="/images/parameterflow.jpg" alt="TOOL FLOW"></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/jasonchenwork/ParameterTool">我實作的參數小工具連結</a></p>
 <pre><code>載入既有 .bin 固件檔案
 依據 ConfigTable.xlsx 自動解析配置表結構
@@ -271,11 +269,10 @@
 簡單的權限管理（目前僅 admin/admin 可取得完整權限）
 修改後可直接另存為新的 .bin 檔案
 </code></pre>
-
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-5/" data-id="cuid3uQ211Bx0N5mFl3ebTLLZ" data-title="那一天我從MCU上學到的(5)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-5/" data-id="cuidfiVnuxNQjr9ecT5g5l1QD" data-title="那一天我從MCU上學到的(5)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -317,7 +314,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/01/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-4/" data-id="cuid1PFUR39BpaSRCWO0zL6HY" data-title="那一天我從MCU上學到的(4)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/01/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-4/" data-id="cuidihk5qussRwBVU2TuNcdZt" data-title="那一天我從MCU上學到的(4)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -358,7 +355,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/11/21/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-3/" data-id="cuid0ieUFBw3i_Ip6vva2K_eC" data-title="那一天我從MCU上學到的(3)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/11/21/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-3/" data-id="cuidIf2x5Bnic_7y1TmNTpik8" data-title="那一天我從MCU上學到的(3)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -394,12 +391,12 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>今天來講過去我們部門遇到的一些問題，有一天我們的產品在特定的操作下出現不預期的結果，我簡單說明我們這產品的流程:當擷取硬體ADC的值後程式會先將ADC資料做簡單的濾波器在往下一步計算後輸出給主機端，其中的計算我簡化為:result&#x3D;sum(adc[i])&#x2F;sum(cnt[i])，當sum(adc[i])與sum(cnt[i])的值破萬時，result的值異常，我們找數位工程師討論結果為這顆MCU的除法器是使用橢圓演算法實作但當輸入的數值過大時會有問題，主要緣由是此算法是用近似疊代的方式逼近，當數值過大時會有無法收斂的情況。當我聽到時傻眼，如果有隱患的問題怎不寫入IC的SPEC中，因為這種問題很難發現到，除厝過程中我們只能一步一步地將每個函數都拆解然後鎖定每步的可能性。但對我們來說是要如何解決問題，最簡單粗暴的方式是當除數與被除數同時大於門檻值時就都同時往右位移想辦法讓除法器能夠收斂而非發散狀態。</p>
+        <p>今天來講過去我們部門遇到的一些問題，有一天我們的產品在特定的操作下出現不預期的結果，我簡單說明我們這產品的流程:當擷取硬體ADC的值後程式會先將ADC資料做簡單的濾波器在往下一步計算後輸出給主機端，其中的計算我簡化為:result=sum(adc[i])/sum(cnt[i])，當sum(adc[i])與sum(cnt[i])的值破萬時，result的值異常，我們找數位工程師討論結果為這顆MCU的除法器是使用橢圓演算法實作但當輸入的數值過大時會有問題，主要緣由是此算法是用近似疊代的方式逼近，當數值過大時會有無法收斂的情況。當我聽到時傻眼，如果有隱患的問題怎不寫入IC的SPEC中，因為這種問題很難發現到，除厝過程中我們只能一步一步地將每個函數都拆解然後鎖定每步的可能性。但對我們來說是要如何解決問題，最簡單粗暴的方式是當除數與被除數同時大於門檻值時就都同時往右位移想辦法讓除法器能夠收斂而非發散狀態。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/11/20/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-2/" data-id="cuidLJBp0jt2MNy8thZM-NK3l" data-title="那一天我從MCU上學到的(2)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/11/20/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-2/" data-id="cuidcuZas0hNHwaFl6_y_3f3Z" data-title="那一天我從MCU上學到的(2)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -436,13 +433,13 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>我是在IC設計公司中做十年的韌體工程師，最近想說把以前工作上的經驗做個紀錄，這系列文比較像是雜談主要講一些技術與自己的所見所聞。</p>
-<p>我進入的第一間公司是使用組合語言來開發公司產品，組合語言對大多數人來說會感覺很困難，但這間公司是使用比較高階的組合語言語法，舉例來說大多數組合語言的暫存器加法會是這樣:ADD, A,X0,X1; 但這邊的寫法為: A &#x3D; R0+R1 是比較直覺的。第一份工作是使用組合語言對我影響很大。當使用組合語言時你會更清楚硬體MCU的運作流程，你會知道如何最佳化程式碼。舉例來說你會知道MCU的乘法指令與除法指令的cycles數與大於簡單的指令ADD&#x2F;SUB&#x2F;MOV的cycles數3倍至10倍，要如何讓你的程式跑的更有效率最簡單的辦法就是少用乘法器與除法器指令，能使用Bit shift取代這步驟就盡可能使用。通常我們在使用一些變數時會初始化該變數為0，但在組合語言中我可以直接使用xor 取代 assign 0的行為。現在多數compiler都會自動使用xor取代assign 0。</p>
+<p>我進入的第一間公司是使用組合語言來開發公司產品，組合語言對大多數人來說會感覺很困難，但這間公司是使用比較高階的組合語言語法，舉例來說大多數組合語言的暫存器加法會是這樣:ADD, A,X0,X1; 但這邊的寫法為: A = R0+R1 是比較直覺的。第一份工作是使用組合語言對我影響很大。當使用組合語言時你會更清楚硬體MCU的運作流程，你會知道如何最佳化程式碼。舉例來說你會知道MCU的乘法指令與除法指令的cycles數與大於簡單的指令ADD/SUB/MOV的cycles數3倍至10倍，要如何讓你的程式跑的更有效率最簡單的辦法就是少用乘法器與除法器指令，能使用Bit shift取代這步驟就盡可能使用。通常我們在使用一些變數時會初始化該變數為0，但在組合語言中我可以直接使用xor 取代 assign 0的行為。現在多數compiler都會自動使用xor取代assign 0。</p>
 <p>總結來說以前寫高階程式語言時根本不會知道要如何優化自己的程式碼，因為我們沒有了解編譯器所產生的結果，但如果我們知道組合語言是如何運作就可以知道有多少東西是可以優化的。也因此我第一份工作使用組合語言對我來說能更知道要如何優化程式。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/11/17/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-1/" data-id="cuidHpvtVy6odFObmSLSjejxZ" data-title="那一天我從MCU上學到的(1)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/11/17/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-1/" data-id="cuidPVpKIxX8t9C6e4AeVDSMV" data-title="那一天我從MCU上學到的(1)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
