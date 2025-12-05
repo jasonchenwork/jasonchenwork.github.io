@@ -93,12 +93,12 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>今天講一些曾經遇到奇奇怪怪的BUG，我記得突然有一天我被分派到開發全新的產品，基本上要在IDE上開啟全新的空白專案，要從最一開始實作BootLoader與初始化硬體，先Load OSC&#x2F;Votalge trim code from OTP，再接下來設定通訊界面(ex:IIC&#x2F;SPI&#x2F;UART)，最後set STACK address等等。因為要從OTP讀取資料因此我還需要規劃OTP的空間，我簡單的設計OTP規劃將每一個表格可以燒入3次為上限，在OTP中用一個DICT紀錄每個TABLE目前燒錄第幾次，如果我將TABLE1寫入第一次完成後我會將DICT中TABLE1寫一個KEY(此KEY非0x00並且非0xFF防止被誤判)，如果現在我要燒第二次TABEL2時我會先將TABLE1_1st寫為0，然後在填TABLE1_2nd資訊，這樣設定的原因為OTP出廠為0xFF我們只能將bit1寫為bit0因此用0x00與0xFF代表此空間無效標記。當然我們將TABLE中資料讀取完成後可以放一個checksum來確保資料的正確性。這是非常簡易簡單方式規劃OTP空間。<br><img src="/images/OTPspace.jpg" alt="OTP space"><br>處理完BootLoader與初始化硬體佔整體進度20%，主要還有main app的部分要完成，這是全新的專案對當時的我來說有很多東西都是邊做邊學。不意外就開始採BUG，第一個問題是我發現某個ISR只能觸發一次，無法觸發第二次之後的問題。為此我還詢問數位RD這問題，我記得當時那位RD回應我說測試部門的已經測試完成沒問題應該是我的問題，所以我又自己跑去問測試部門的member，我來記得我一開始找他們時他們還很不友善可是這問題對他們來說是質疑他們的立場，當時我還只是個出社會幾年的小工程師而已。要如何處理這問題當然就是必須要用他們的語言來溝通，也因此我需要專門為這問題寫一個test pattern給他們讓大家知道不是我整個系統問題而是真的可能是硬體設計上的BUG!我們用我的test pattern跑模擬可以發現進入這個ISR後雖然我們pattern有清除ISR狀態但硬體線路錯誤導致我無法清除ISR狀態，也因此我根本無法清除ISR狀態就不可能讓這ISR再次觸發。其實這問題很簡單但最大的問題是如何通溝不同部門的人。</p>
+        <p>今天講一些曾經遇到奇奇怪怪的BUG，我記得突然有一天我被分派到開發全新的產品，基本上要在IDE上開啟全新的空白專案，要從最一開始實作BootLoader與初始化硬體，先Load OSC&#x2F;Votalge trim code from OTP，再接下來設定通訊界面(ex:IIC&#x2F;SPI&#x2F;UART)，最後set STACK address等等。因為要從OTP讀取資料因此我還需要規劃OTP的空間，我簡單的設計OTP規劃將每一個表格可以燒入3次為上限，在OTP中用一個DICT紀錄每個TABLE目前燒錄第幾次，如果我將TABLE1寫入第一次完成後我會將DICT中TABLE1寫一個KEY(此KEY非0x00並且非0xFF防止被誤判)，如果現在我要燒第二次TABEL2時我會先將TABLE1_1st寫為0，然後在填TABLE1_2nd資訊，這樣設定的原因為OTP出廠為0xFF我們只能將bit1寫為bit0因此用0x00與0xFF代表此空間無效標記。當然我們將TABLE中資料讀取完成後可以放一個checksum來確保資料的正確性。這是非常簡易簡單方式規劃OTP空間。<br><img src="/images/OTPspace.JPG" alt="OTP space"><br>處理完BootLoader與初始化硬體佔整體進度20%，主要還有main app的部分要完成，這是全新的專案對當時的我來說有很多東西都是邊做邊學。不意外就開始採BUG，第一個問題是我發現某個ISR只能觸發一次，無法觸發第二次之後的問題。為此我還詢問數位RD這問題，我記得當時那位RD回應我說測試部門的已經測試完成沒問題應該是我的問題，所以我又自己跑去問測試部門的member，我來記得我一開始找他們時他們還很不友善可是這問題對他們來說是質疑他們的立場，當時我還只是個出社會幾年的小工程師而已。要如何處理這問題當然就是必須要用他們的語言來溝通，也因此我需要專門為這問題寫一個test pattern給他們讓大家知道不是我整個系統問題而是真的可能是硬體設計上的BUG!我們用我的test pattern跑模擬可以發現進入這個ISR後雖然我們pattern有清除ISR狀態但硬體線路錯誤導致我無法清除ISR狀態，也因此我根本無法清除ISR狀態就不可能讓這ISR再次觸發。其實這問題很簡單但最大的問題是如何通溝不同部門的人。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/05/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-9/" data-id="cuidElNTtaMU0meWD2TBCk28-" data-title="那一天我從MCU上學到的(9)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/05/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-9/" data-id="cuidbI6N22E92C2XcuShuaYd7" data-title="那一天我從MCU上學到的(9)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -139,7 +139,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-8/" data-id="cuid0OANCIf-8JPTFgDQbUmJw" data-title="那一天我從MCU上學到的(8)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-8/" data-id="cuidzJBXGphsWxSNvGUvZZBFK" data-title="那一天我從MCU上學到的(8)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -180,7 +180,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-7/" data-id="cuidPNAOqUL0jTuqF9ZNyiHWq" data-title="那一天我從MCU上學到的(7)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-7/" data-id="cuidJpIIaOXAa7dJLmv73Ohzc" data-title="那一天我從MCU上學到的(7)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -221,7 +221,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-6/" data-id="cuidHBTbfh4swdP7vZYD8TQxi" data-title="那一天我從MCU上學到的(6)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-6/" data-id="cuid9M85SGcDjIso2jwfeVfk7" data-title="那一天我從MCU上學到的(6)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -275,7 +275,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-5/" data-id="cuidINzDNod4i_JQ7AfMADCGw" data-title="那一天我從MCU上學到的(5)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-5/" data-id="cuid3uQ211Bx0N5mFl3ebTLLZ" data-title="那一天我從MCU上學到的(5)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -317,7 +317,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/01/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-4/" data-id="cuidbGAHWh_keRgIpN1-STZLp" data-title="那一天我從MCU上學到的(4)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/01/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-4/" data-id="cuid1PFUR39BpaSRCWO0zL6HY" data-title="那一天我從MCU上學到的(4)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -358,7 +358,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/11/21/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-3/" data-id="cuidffovpF3PQ9QI2HJaURxU8" data-title="那一天我從MCU上學到的(3)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/11/21/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-3/" data-id="cuid0ieUFBw3i_Ip6vva2K_eC" data-title="那一天我從MCU上學到的(3)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -399,7 +399,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/11/20/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-2/" data-id="cuidUAoQ9az1LWnCGEcZp-At2" data-title="那一天我從MCU上學到的(2)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/11/20/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-2/" data-id="cuidLJBp0jt2MNy8thZM-NK3l" data-title="那一天我從MCU上學到的(2)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -442,7 +442,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/11/17/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-1/" data-id="cuidkS1KApBsVNT0VKcf5e2ZG" data-title="那一天我從MCU上學到的(1)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/11/17/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-1/" data-id="cuidHpvtVy6odFObmSLSjejxZ" data-title="那一天我從MCU上學到的(1)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
