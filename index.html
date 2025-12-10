@@ -94,7 +94,7 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>今天要介紹過去做過有趣的專案，這專案主要是用我們的產品當作副廠拿來賣，因此我們需要與原廠產品與主機的通訊協定一樣。我要負責解析原廠的通訊然後複製在我們的產品上，簡單來講就是仿制原廠通訊過程，當主機下如何指令時我們需要回應甚麼指令。在分析的過程中，我覺得可以使用function ptr建立一個model，這樣以後要複製其他廠家的協定只需maintain 我的table即可。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX_PACKETDATA  512</span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> CommData[MAX_PACKETDATA];</span><br><span class="line"><span class="keyword">volatile</span> <span class="type">unsigned</span> <span class="type">char</span> SendByteIdx;      </span><br><span class="line"><span class="keyword">volatile</span> <span class="type">unsigned</span> <span class="type">char</span> RecdByteIdx;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line"> <span class="keyword">volatile</span> <span class="type">unsigned</span> <span class="type">char</span> *pCommPacketBuf;</span><br><span class="line"> <span class="keyword">volatile</span> <span class="type">unsigned</span> <span class="type">short</span> Len;</span><br><span class="line"> <span class="keyword">volatile</span> <span class="type">unsigned</span> <span class="type">char</span> ErrorFlag;</span><br><span class="line">&#125;ST_PACKET;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span> <span class="params">(*func)</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">funcNop</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line">ST_PACKET st_CommSenddata;</span><br><span class="line">ST_PACKET st_CommRecddata;</span><br><span class="line">func g_SendStopHandle = funcNop;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line"> <span class="keyword">volatile</span> <span class="type">unsigned</span> <span class="type">short</span> CMD;</span><br><span class="line"> <span class="type">unsigned</span> <span class="type">char</span> *RecdBuffer;</span><br><span class="line"> <span class="type">unsigned</span> <span class="type">char</span> RecdBufferLen;</span><br><span class="line"> <span class="type">unsigned</span> <span class="type">char</span> *SendBuffer;</span><br><span class="line"> <span class="type">unsigned</span> <span class="type">char</span> SendBufferLen;</span><br><span class="line"> func RecdStopHandle;</span><br><span class="line"> func SendStopHandle;</span><br><span class="line">&#125;ST_REGTABLE;</span><br><span class="line">ST_REGTABLE </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX_PACKETDATA  512</span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> CommData[MAX_PACKETDATA];</span><br><span class="line"><span class="keyword">volatile</span> <span class="type">unsigned</span> <span class="type">char</span> SendByteIdx;      </span><br><span class="line"><span class="keyword">volatile</span> <span class="type">unsigned</span> <span class="type">char</span> RecdByteIdx;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line"> <span class="keyword">volatile</span> <span class="type">unsigned</span> <span class="type">char</span> *pCommPacketBuf;</span><br><span class="line"> <span class="keyword">volatile</span> <span class="type">unsigned</span> <span class="type">short</span> Len;</span><br><span class="line"> <span class="keyword">volatile</span> <span class="type">unsigned</span> <span class="type">char</span> ErrorFlag;</span><br><span class="line">&#125;ST_PACKET;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span> <span class="params">(*func)</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">funcNop</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line">ST_PACKET st_CommSenddata;</span><br><span class="line">ST_PACKET st_CommRecddata;</span><br><span class="line">func g_SendStopHandle = funcNop;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line"> <span class="keyword">volatile</span> <span class="type">unsigned</span> <span class="type">short</span> CMD;</span><br><span class="line"> <span class="type">unsigned</span> <span class="type">char</span> *RecdBuffer;</span><br><span class="line"> <span class="type">unsigned</span> <span class="type">char</span> RecdBufferLen;</span><br><span class="line"> <span class="type">unsigned</span> <span class="type">char</span> *SendBuffer;</span><br><span class="line"> <span class="type">unsigned</span> <span class="type">char</span> SendBufferLen;</span><br><span class="line"> func RecdStopHandle;</span><br><span class="line"> func SendStopHandle;</span><br><span class="line">&#125;ST_REGTABLE;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> NELEMS(x)  (sizeof(x) / sizeof((x)[0])) </span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> INFO_VERSION[<span class="number">8</span>] = &#123;<span class="number">0xAA</span>,<span class="number">0xAA</span>,<span class="number">0xAA</span>,<span class="number">0xAA</span>,<span class="number">0xAA</span>,<span class="number">0xAA</span>,<span class="number">0xAA0</span>,<span class="number">0xAA</span>&#125;;</span><br><span class="line"><span class="type">void</span> <span class="title function_">funcRecd0x0001</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">     <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// &#123;CMD, RecdBuffer, RecdBufLen, SendBuffer, SendBufLen, RecdHandle, SendHanle&#125;</span></span><br><span class="line">ST_REGTABLE st_RegTable[]=&#123;&#123;<span class="number">0x0000</span>,<span class="literal">NULL</span>,<span class="number">0</span>,INFO_VERSION,NELEMS(INFO_VERSION),funcNop,funcNop&#125;,</span><br><span class="line">&#123;<span class="number">0x0001</span>,&amp;ctrl_mode,<span class="number">1</span>,&amp;ctrl_mode,<span class="number">1</span>,funcRecd0x0001,funcNop&#125;,\&#125;;</span><br></pre></td></tr></table></figure>
 
@@ -103,7 +103,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/10/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-11/" data-id="cuidDPdceHtuQuRUPviKHP-Dd" data-title="那一天我從MCU上學到的(11)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/10/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-11/" data-id="cuidmZ8GC7gBBrXUWDnM6w2gQ" data-title="那一天我從MCU上學到的(11)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -144,7 +144,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/08/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-10/" data-id="cuidmD8Pjt7pezjaW6b7t05cy" data-title="那一天我從MCU上學到的(10)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/08/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-10/" data-id="cuidqQ7kvOqLVNS6VCGq34_4Q" data-title="那一天我從MCU上學到的(10)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -185,7 +185,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/05/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-9/" data-id="cuidJ0oQFu49ZCOruhoXsyMKM" data-title="那一天我從MCU上學到的(9)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/05/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-9/" data-id="cuidOuK95ILXzSbV1Mm1C6nYu" data-title="那一天我從MCU上學到的(9)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -226,7 +226,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-8/" data-id="cuid4cSntSZzQYfNRxVVjiTcz" data-title="那一天我從MCU上學到的(8)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-8/" data-id="cuidVSTfbEQxJuqDTDRr_M5xo" data-title="那一天我從MCU上學到的(8)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -267,7 +267,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-7/" data-id="cuid24m-SiUv8EHxGCfAYvVfI" data-title="那一天我從MCU上學到的(7)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-7/" data-id="cuidR9VXZMJNlTsiILZ0KYmYx" data-title="那一天我從MCU上學到的(7)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -308,7 +308,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-6/" data-id="cuidqq59TVUshTdwBxr6vCjTf" data-title="那一天我從MCU上學到的(6)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-6/" data-id="cuidBYDcL2iEgnLHSjY9QpcxN" data-title="那一天我從MCU上學到的(6)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -362,7 +362,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-5/" data-id="cuidWwwMn3Cwa1ua1AdCNl_DM" data-title="那一天我從MCU上學到的(5)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-5/" data-id="cuid6OjIHzAgDOnjUmvAOeV2o" data-title="那一天我從MCU上學到的(5)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -404,7 +404,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/01/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-4/" data-id="cuidRbGhchswzvJMpxKFZXDjF" data-title="那一天我從MCU上學到的(4)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/01/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-4/" data-id="cuidAwgYOiWh3uIrV11xooXJN" data-title="那一天我從MCU上學到的(4)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -445,7 +445,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/11/21/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-3/" data-id="cuidGVCdZkg-ZQMK0HbGKW7yH" data-title="那一天我從MCU上學到的(3)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/11/21/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-3/" data-id="cuidYkWDHLh-6HWLUSDSDpdyC" data-title="那一天我從MCU上學到的(3)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -486,7 +486,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/11/20/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-2/" data-id="cuidl2ry3Dy-h0-BnuR2GlXEI" data-title="那一天我從MCU上學到的(2)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/11/20/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-2/" data-id="cuidDry-6pRmraUt1CkMfdySq" data-title="那一天我從MCU上學到的(2)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
