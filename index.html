@@ -73,92 +73,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-adaboostfacedection" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/12/30/adaboostfacedection/" class="article-date">
-  <time class="dt-published" datetime="2025-12-30T02:34:19.000Z" itemprop="datePublished">2025-12-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/12/30/adaboostfacedection/">ADABOOST Face detection with Haar feature</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>This algorithm, published in 2001, is based on the concept of combining many weak classifiers to form a strong classifier. Each stage is a strong classifier composed of multiple weak classifiers, where each weak classifier is implemented using a decision tree.</p>
-<p>At each stage, the algorithm determines whether a region is a non-face or a potential face. If it is classified as a potential face, it proceeds to the next stage for further detection. Only if the region passes all stages is it finally classified as a face; otherwise, it is considered a non-face.</p>
-<p>Each weak classifier uses Haar features for computation. Haar features are used because they can be efficiently calculated using an integral image, which significantly improves overall performance.</p>
-<p>This project is mainly based on the OpenCV source code.</p>
-<p>There are two scanning methods: Scaling windows: fix image size, change window size Scaling image: change image size, fix window size</p>
-<p><img src="https://github.com/jasonchenwork/ImageProcessing/blob/main/10reorganisation/img/scalingwindowansscalingimage.bmp"></p>
-<p>test image is lena(512x512)  </p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>Scale Windows</th>
-<th>Scale Image</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Speed(ms)</td>
-<td>3501ms*</td>
-<td>16731ms</td>
-</tr>
-<tr>
-<td>accuracy</td>
-<td>Lower</td>
-<td>Better</td>
-</tr>
-</tbody></table>
-<h1 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h1><p><img src="https://github.com/jasonchenwork/ImageProcessing/blob/main/10reorganisation/img/testadaboost.bmp"></p>
-<h1 id="Implement-note"><a href="#Implement-note" class="headerlink" title="Implement note"></a>Implement note</h1><ol>
-<li>haar’s weights need to normalize<br>$$w’_i​&#x3D; \frac{w_i}{CascadeW×CascadeH}$$</li>
-</ol>
-<p>The method for scaling windows is integrated into the update feature function. This is the method in scaling image:</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">   <span class="function"><span class="type">double</span> <span class="title">HaarObjectDetector::FeatureGetSum2</span><span class="params">(IntegralImage2* im, <span class="type">int</span> x, <span class="type">int</span> y,</span></span></span><br><span class="line"><span class="params"><span class="function">                                          HaarFeature HF, <span class="type">double</span> scale)</span> </span>&#123;</span><br><span class="line">  <span class="type">double</span> sum = <span class="number">0.0</span>;</span><br><span class="line">  <span class="keyword">if</span> (!HF.Tilted) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; HF.Rectangle.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">      sum += im-&gt;<span class="built_in">GetSum</span>(x + (HF.Rectangle[i].x), y + HF.Rectangle[i].y,</span><br><span class="line">                        HF.Rectangle[i].w, HF.Rectangle[i].h) *</span><br><span class="line">             (HF.Rectangle[i].weight * (<span class="number">1.0</span> / (baseWidth * baseHeight)));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> sum;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>brightness normalize</li>
-</ol>
-<p>$$f_{\text{norm}} &#x3D; \frac{\sum_i w_i S(R_i) - \text{mean}<em>{\text{window}} \cdot \sum_i w_i |R_i|}{\text{std}</em>{\text{window}}}$$</p>
-<p>$S(R_i)$ → rectangle sum from integral image<br>$w_i$ → rectangle weight (+1 &#x2F; -1)<br>$|R_i|$ → rectangle area</p>
-<p>mean_window &#x2F; std_window → window pixel mean &amp; std<br>Due to<br>$ \sum_i w_i |R_i| &#x3D;0 $<br>Let’s<br>$$f_{\text{norm}} &#x3D; \frac{\sum_i w_i S(R_i)}{\text{std}_{\text{window}}}$$</p>
-<p>Therefore, there is no need to follow the calculation based on the current feature rectangle, and it can be further optimized afterwards.<br>Let’s<br>$$<br>\frac{GetFeature()}{\text{std}<em>{\text{window}}} &lt; {\text{node}</em>{\text{threshold}}}<br>$$</p>
-<p>to</p>
-<p>$$<br>\text{GetFeature()} &lt; {\text{node}<em>{\text{threshold}}} * {\text{std}</em>{\text{window}}}<br>$$</p>
-<p>factor &#x3D; $ {\text{std}_{\text{window}}} $</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">HaarObjectDetector::HaarClassifierCompute2</span><span class="params">(IntegralImage2* im,</span></span></span><br><span class="line"><span class="params"><span class="function">                                                ORectangle rectangle,</span></span></span><br><span class="line"><span class="params"><span class="function">                                                <span class="type">double</span> scale)</span> </span>&#123;</span><br><span class="line">  <span class="type">int</span> x = rectangle.x;</span><br><span class="line">  <span class="type">int</span> y = rectangle.y;</span><br><span class="line">  <span class="type">int</span> w = rectangle.w;</span><br><span class="line">  <span class="type">int</span> h = rectangle.h;</span><br><span class="line">  <span class="type">double</span> invArea = <span class="number">1.0</span> / (myHaarCascadeStage.Width * myHaarCascadeStage.Heigh);</span><br><span class="line"></span><br><span class="line">  <span class="type">double</span> mean = im-&gt;<span class="built_in">GetSum</span>(x, y, w, h) * invArea;</span><br><span class="line"></span><br><span class="line">  <span class="type">double</span> factor = im-&gt;<span class="built_in">GetSum2</span>(x, y, w, h) * invArea - (mean * mean);</span><br><span class="line"></span><br><span class="line">  factor = (factor &gt;= <span class="number">0.0</span>) ? <span class="built_in">sqrt</span>(factor) : <span class="number">1.0</span>;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line">    <span class="type">double</span> sum = <span class="built_in">FeatureGetSum2</span>(</span><br><span class="line">            im, x, y, myHaarCascadeStage.Stage[i].Tree[j].Node[z].Feature,</span><br><span class="line">            scale);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (sum &lt; myHaarCascadeStage.Stage[i].Tree[j].Node[z].Node_Threshold *</span><br><span class="line">                      factor) </span><br><span class="line">          &#123;</span><br><span class="line">            ...</span><br><span class="line">          &#125;</span><br><span class="line">    ...</span><br><span class="line"> </span><br></pre></td></tr></table></figure>
-
-<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p>[1] Rapid Object Detection using a Boosted Cascade of Simple Features” “Robust Real-Time Face Detection</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/30/adaboostfacedection/" data-id="cuid5yA0UkJI1h8Tb6OKULNcI" data-title="ADABOOST Face detection with Haar feature" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/" rel="tag">algorithm</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
     <article id="post-如何優化程式執行效率" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/12/29/%E5%A6%82%E4%BD%95%E5%84%AA%E5%8C%96%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C%E6%95%88%E7%8E%87/" class="article-date">
@@ -182,19 +96,18 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>我主要分成兩大部分:</p>
-<h2 id="硬體"><a href="#硬體" class="headerlink" title="硬體"></a>硬體</h2><h3 id="1-SIMD-Single-Instruction-Multiple-Data"><a href="#1-SIMD-Single-Instruction-Multiple-Data" class="headerlink" title="1. SIMD(Single Instruction, Multiple Data)"></a>1. SIMD(Single Instruction, Multiple Data)</h3><h3 id="2-多核心-Multithead-OpenMP"><a href="#2-多核心-Multithead-OpenMP" class="headerlink" title="2. 多核心&#x2F;Multithead&#x2F;OpenMP"></a>2. 多核心&#x2F;Multithead&#x2F;OpenMP</h3><h3 id="3-GPU-CUDA-OPENCL"><a href="#3-GPU-CUDA-OPENCL" class="headerlink" title="3. GPU&#x2F;CUDA&#x2F;OPENCL"></a>3. GPU&#x2F;CUDA&#x2F;OPENCL</h3><h2 id="軟體"><a href="#軟體" class="headerlink" title="軟體"></a>軟體</h2><h3 id="1-數學"><a href="#1-數學" class="headerlink" title="1. 數學"></a>1. 數學</h3><p>   TBD</p>
+<h2 id="硬體"><a href="#硬體" class="headerlink" title="硬體"></a>硬體</h2><h3 id="1-SIMD-Single-Instruction-Multiple-Data"><a href="#1-SIMD-Single-Instruction-Multiple-Data" class="headerlink" title="1. SIMD(Single Instruction, Multiple Data)"></a>1. SIMD(Single Instruction, Multiple Data)</h3><h3 id="2-多核心-Multithead-OpenMP"><a href="#2-多核心-Multithead-OpenMP" class="headerlink" title="2. 多核心/Multithead/OpenMP"></a>2. 多核心/Multithead/OpenMP</h3><h3 id="3-GPU-CUDA-OPENCL"><a href="#3-GPU-CUDA-OPENCL" class="headerlink" title="3. GPU/CUDA/OPENCL"></a>3. GPU/CUDA/OPENCL</h3><h2 id="軟體"><a href="#軟體" class="headerlink" title="軟體"></a>軟體</h2><h3 id="1-數學"><a href="#1-數學" class="headerlink" title="1. 數學"></a>1. 數學</h3><p>   TBD</p>
 <h3 id="2-演算法技巧"><a href="#2-演算法技巧" class="headerlink" title="2. 演算法技巧"></a>2. 演算法技巧</h3><p>   可以利用演算法Pattern來加速程式執行效率<br>   例如: Binary Search, Sliding window,DP, prefix sum..etc<br>   看見這些演算法技巧是否很眼熟呢?沒錯在LeetCode題目中這些都是常見的解題技巧。接下來我會陸續更新各種演算法技巧如何應用於影像處理領域上。</p>
-<p>   Binary Search: sqrt()<br>   Prefix sum:  <a href="https://jasonchenwork.github.io/2025/12/30/adaboostfacedection/">adaboostfacedetection</a>,  <a target="_blank" rel="noopener" href="https://github.com/jasonchenwork/ImageProcessing/blob/main/md/NLMwithintegrallmage.md">NonLocalMean</a><br>   Sliding windows:  <a target="_blank" rel="noopener" href="https://github.com/jasonchenwork/ImageProcessing/blob/main/md/GaussianBlur.md">StackBlur</a></p>
+<p>   Binary Search: sqrt()<br>   Prefix sum:  <a target="_blank" rel="noopener" href="https://github.com/jasonchenwork/ImageProcessing/blob/main/md/adaboostfacedetection.md">adaboostfacedetection</a>,  <a target="_blank" rel="noopener" href="https://github.com/jasonchenwork/ImageProcessing/blob/main/md/NLMwithintegrallmage.md">NonLocalMean</a><br>   Sliding windows:  <a target="_blank" rel="noopener" href="https://github.com/jasonchenwork/ImageProcessing/blob/main/md/GaussianBlur.md">StackBlur</a></p>
 <h3 id="3-資料導向設計"><a href="#3-資料導向設計" class="headerlink" title="3. 資料導向設計"></a>3. 資料導向設計</h3><p>   主要概念是將要處理資料盡可能放在連續的記憶體空間來提升記憶體cache hit rate達到提升效率，另一方面如果記憶體連續後比較好配合使用SIMD優化</p>
 <h3 id="4-Strength-Reduction"><a href="#4-Strength-Reduction" class="headerlink" title="4. Strength Reduction"></a>4. Strength Reduction</h3><p>   a. Lookup Table<br>      sin(x), cos(x) 需先建立起table可加速運算但會失去精準度  </p>
-<p>   b. Bit Shift replace of multiplication&#x2F;division<br>      用bit shift可以有效率高於乘除法</p>
+<p>   b. Bit Shift replace of multiplication/division<br>      用bit shift可以有效率高於乘除法</p>
 <h6 id="如果乘數是2-N可調用shift取代"><a href="#如果乘數是2-N可調用shift取代" class="headerlink" title="如果乘數是2^N可調用shift取代"></a>如果乘數是2^N可調用shift取代</h6><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var = var * <span class="number">2</span>;</span><br><span class="line"><span class="comment">// better</span></span><br><span class="line">var &lt;&lt;=<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-
-<h6 id="如果除數是2-N可調用shift取代"><a href="#如果除數是2-N可調用shift取代" class="headerlink" title="如果除數是2^N可調用shift取代"></a>如果除數是2^N可調用shift取代</h6><pre><code class="language-C">   var = var / 2;
+<h6 id="如果除數是2-N可調用shift取代"><a href="#如果除數是2-N可調用shift取代" class="headerlink" title="如果除數是2^N可調用shift取代"></a>如果除數是2^N可調用shift取代</h6><pre><code class="lang-C">   var = var / 2;
    // better
    var &gt;&gt;=1;
 </code></pre>
-<h6 id="swap-function"><a href="#swap-function" class="headerlink" title="swap function"></a>swap function</h6><pre><code class="language-C">   void swap(int *a,int *b)
+<h6 id="swap-function"><a href="#swap-function" class="headerlink" title="swap function"></a>swap function</h6><pre><code class="lang-C">   void swap(int *a,int *b)
    {
      int tmp;
      tmp = *a;
@@ -209,7 +122,7 @@
      *a^=*b;
    }
 </code></pre>
-<h6 id="奇偶數判斷"><a href="#奇偶數判斷" class="headerlink" title="奇偶數判斷"></a>奇偶數判斷</h6><pre><code class="language-C">   if(var % 2)
+<h6 id="奇偶數判斷"><a href="#奇偶數判斷" class="headerlink" title="奇偶數判斷"></a>奇偶數判斷</h6><pre><code class="lang-C">   if(var % 2)
    //better
    if(var &amp; 2)
 </code></pre>
@@ -217,7 +130,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/29/%E5%A6%82%E4%BD%95%E5%84%AA%E5%8C%96%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C%E6%95%88%E7%8E%87/" data-id="cuidC4LbxiaCoNL7czzmoMXtZ" data-title="如何優化程式執行效率" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/29/%E5%A6%82%E4%BD%95%E5%84%AA%E5%8C%96%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C%E6%95%88%E7%8E%87/" data-id="cuid6-Pg7M01VmSwZrTvHu6e6" data-title="如何優化程式執行效率" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -255,13 +168,12 @@
       
         <p>今天要介紹過去做過有趣的專案，這專案主要是用我們的產品當作副廠拿來賣，因此我們需要與原廠產品與主機的通訊協定一樣。我要負責解析原廠的通訊然後複製在我們的產品上，簡單來講就是仿制原廠通訊過程，當主機下如何指令時我們需要回應甚麼指令。在分析的過程中，我覺得可以使用function ptr建立一個model，這樣以後要複製其他廠家的協定只需maintain 我的table即可。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX_PACKETDATA  512</span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> CommData[MAX_PACKETDATA];</span><br><span class="line"><span class="keyword">volatile</span> <span class="type">unsigned</span> <span class="type">char</span> SendByteIdx;      </span><br><span class="line"><span class="keyword">volatile</span> <span class="type">unsigned</span> <span class="type">char</span> RecdByteIdx;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line"> <span class="keyword">volatile</span> <span class="type">unsigned</span> <span class="type">char</span> *pCommPacketBuf;</span><br><span class="line"> <span class="keyword">volatile</span> <span class="type">unsigned</span> <span class="type">short</span> Len;</span><br><span class="line"> <span class="keyword">volatile</span> <span class="type">unsigned</span> <span class="type">char</span> ErrorFlag;</span><br><span class="line">&#125;ST_PACKET;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span> <span class="params">(*func)</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">funcNop</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line">ST_PACKET st_CommSenddata;</span><br><span class="line">ST_PACKET st_CommRecddata;</span><br><span class="line">func g_SendStopHandle = funcNop;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line"> <span class="keyword">volatile</span> <span class="type">unsigned</span> <span class="type">short</span> CMD;</span><br><span class="line"> <span class="type">unsigned</span> <span class="type">char</span> *RecdBuffer;</span><br><span class="line"> <span class="type">unsigned</span> <span class="type">char</span> RecdBufferLen;</span><br><span class="line"> <span class="type">unsigned</span> <span class="type">char</span> *SendBuffer;</span><br><span class="line"> <span class="type">unsigned</span> <span class="type">char</span> SendBufferLen;</span><br><span class="line"> func RecdStopHandle;</span><br><span class="line"> func SendStopHandle;</span><br><span class="line">&#125;ST_REGTABLE;</span><br><span class="line"> </span><br><span class="line"><span class="meta">#<span class="keyword">define</span> NELEMS(x)  (sizeof(x) / sizeof((x)[0])) </span></span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> INFO_VERSION[<span class="number">8</span>] = &#123;<span class="number">0xAA</span>,<span class="number">0xAA</span>,<span class="number">0xAA</span>,<span class="number">0xAA</span>,<span class="number">0xAA</span>,<span class="number">0xAA</span>,<span class="number">0xAA</span>,<span class="number">0xAA</span>&#125;;</span><br><span class="line"><span class="type">void</span> <span class="title function_">funcRecd0x0001</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">     <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// &#123;CMD, RecdBuffer, RecdBufLen, SendBuffer, SendBufLen, RecdHandle, SendHanle&#125;</span></span><br><span class="line">ST_REGTABLE st_RegTable[]=&#123;&#123;<span class="number">0x0000</span>,<span class="literal">NULL</span>,<span class="number">0</span>,INFO_VERSION,NELEMS(INFO_VERSION),funcNop,funcNop&#125;,</span><br><span class="line">&#123;<span class="number">0x0001</span>,&amp;ctrl_mode,<span class="number">1</span>,&amp;ctrl_mode,<span class="number">1</span>,funcRecd0x0001,funcNop&#125;&#125;;</span><br></pre></td></tr></table></figure>
-
 <p>以上就是定義變數與TABLE的部分，使用一個BUFFER暫存主機的資料，然後當通訊完成時，我們在判斷這筆資料要如何處裡這裡透過st_RegTable 先尋找是否有對應的cmd，如果找到對應的cmd我們就會針對此cmd進行對應的action。假設主機的cmd為0x0000，我只須回應對應的封包即可。<br>這是function ptr的應用之一，function ptr可以讓程式簡潔有效率，如果不使用function ptr來仿製其他家的通訊協定就需要寫一堆if else or switch case導致code很難maintain。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/10/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-11/" data-id="cuidbNSb7iMfKW9j71G3NwxMp" data-title="那一天我從MCU上學到的(11)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/10/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-11/" data-id="cuidfmX7wd-0YZfswptnSKsjo" data-title="那一天我從MCU上學到的(11)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -302,7 +214,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/08/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-10/" data-id="cuidomH-SE3fSTPz6ad9_p4U5" data-title="那一天我從MCU上學到的(10)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/08/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-10/" data-id="cuideuelwSBWck0sp9LS3iJuM" data-title="那一天我從MCU上學到的(10)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -338,12 +250,12 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>今天講一些曾經遇到奇奇怪怪的BUG，我記得突然有一天我被分派到開發全新的產品，基本上要在IDE上開啟全新的空白專案，要從最一開始實作BootLoader與初始化硬體，先Load OSC&#x2F;Votalge trim code from OTP，再接下來設定通訊界面(ex:IIC&#x2F;SPI&#x2F;UART)，最後set STACK address等等。因為要從OTP讀取資料因此我還需要規劃OTP的空間，我簡單的設計OTP規劃將每一個表格可以燒入3次為上限，在OTP中用一個DICT紀錄每個TABLE目前燒錄第幾次，如果我將TABLE1寫入第一次完成後我會將DICT中TABLE1寫一個KEY(此KEY非0x00並且非0xFF防止被誤判)，如果現在我要燒第二次TABEL2時我會先將TABLE1_1st寫為0，然後在填TABLE1_2nd資訊，這樣設定的原因為OTP出廠為0xFF我們只能將bit1寫為bit0因此用0x00與0xFF代表此空間無效標記。當然我們將TABLE中資料讀取完成後可以放一個checksum來確保資料的正確性。這是非常簡易簡單方式規劃OTP空間。<br><img src="/images/OTPspace.JPG" alt="OTP space"><br>處理完BootLoader與初始化硬體佔整體進度20%，主要還有main app的部分要完成，這是全新的專案對當時的我來說有很多東西都是邊做邊學。不意外就開始採BUG，第一個問題是我發現某個ISR只能觸發一次，無法觸發第二次之後的問題。為此我還詢問數位RD這問題，我記得當時那位RD回應我說測試部門的已經測試完成沒問題應該是我的問題，所以我又自己跑去問測試部門的member，我來記得我一開始找他們時他們還很不友善可是這問題對他們來說是質疑他們的立場，當時我還只是個出社會幾年的小工程師而已。要如何處理這問題當然就是必須要用他們的語言來溝通，也因此我需要專門為這問題寫一個test pattern給他們讓大家知道不是我整個系統問題而是真的可能是硬體設計上的BUG!我們用我的test pattern跑模擬可以發現進入這個ISR後雖然我們pattern有清除ISR狀態但硬體線路錯誤導致我無法清除ISR狀態，也因此我根本無法清除ISR狀態就不可能讓這ISR再次觸發。其實這問題很簡單但最大的問題是如何通溝不同部門的人。</p>
+        <p>今天講一些曾經遇到奇奇怪怪的BUG，我記得突然有一天我被分派到開發全新的產品，基本上要在IDE上開啟全新的空白專案，要從最一開始實作BootLoader與初始化硬體，先Load OSC/Votalge trim code from OTP，再接下來設定通訊界面(ex:IIC/SPI/UART)，最後set STACK address等等。因為要從OTP讀取資料因此我還需要規劃OTP的空間，我簡單的設計OTP規劃將每一個表格可以燒入3次為上限，在OTP中用一個DICT紀錄每個TABLE目前燒錄第幾次，如果我將TABLE1寫入第一次完成後我會將DICT中TABLE1寫一個KEY(此KEY非0x00並且非0xFF防止被誤判)，如果現在我要燒第二次TABEL2時我會先將TABLE1_1st寫為0，然後在填TABLE1_2nd資訊，這樣設定的原因為OTP出廠為0xFF我們只能將bit1寫為bit0因此用0x00與0xFF代表此空間無效標記。當然我們將TABLE中資料讀取完成後可以放一個checksum來確保資料的正確性。這是非常簡易簡單方式規劃OTP空間。<br><img src="/images/OTPspace.JPG" alt="OTP space"><br>處理完BootLoader與初始化硬體佔整體進度20%，主要還有main app的部分要完成，這是全新的專案對當時的我來說有很多東西都是邊做邊學。不意外就開始採BUG，第一個問題是我發現某個ISR只能觸發一次，無法觸發第二次之後的問題。為此我還詢問數位RD這問題，我記得當時那位RD回應我說測試部門的已經測試完成沒問題應該是我的問題，所以我又自己跑去問測試部門的member，我來記得我一開始找他們時他們還很不友善可是這問題對他們來說是質疑他們的立場，當時我還只是個出社會幾年的小工程師而已。要如何處理這問題當然就是必須要用他們的語言來溝通，也因此我需要專門為這問題寫一個test pattern給他們讓大家知道不是我整個系統問題而是真的可能是硬體設計上的BUG!我們用我的test pattern跑模擬可以發現進入這個ISR後雖然我們pattern有清除ISR狀態但硬體線路錯誤導致我無法清除ISR狀態，也因此我根本無法清除ISR狀態就不可能讓這ISR再次觸發。其實這問題很簡單但最大的問題是如何通溝不同部門的人。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/05/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-9/" data-id="cuid4m1OmrK9cb6QPYJ725yOG" data-title="那一天我從MCU上學到的(9)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/05/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-9/" data-id="cuideqLKZlbydkFVVVTRST3Wq" data-title="那一天我從MCU上學到的(9)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -384,7 +296,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-8/" data-id="cuidAjxo3nrAlWbPWrtRbBQjs" data-title="那一天我從MCU上學到的(8)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-8/" data-id="cuid2VogZJhhW7msGL8w0NW_9" data-title="那一天我從MCU上學到的(8)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -425,7 +337,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-7/" data-id="cuidNPZKeSSfTvky-4OmAWEcc" data-title="那一天我從MCU上學到的(7)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-7/" data-id="cuidPZN6mtfuzfQFp9qovCxf9" data-title="那一天我從MCU上學到的(7)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -466,7 +378,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-6/" data-id="cuidgkaGBcX6TgYq1KhcRJG_6" data-title="那一天我從MCU上學到的(6)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-6/" data-id="cuidy73EaySKDxk8-h6ADAnKi" data-title="那一天我從MCU上學到的(6)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -502,9 +414,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>今天要來介紹一些FW理架構與簡單的實作出工具，對於大多數公司的IC產品對於客戶需求的差異都會想要最小的改動FW，畢竟如果每一次都需要針對客戶需求修改程式要付出的風險很大，公司也希望自家的產品可以交由FAE只修改參數來滿足客戶需求。因此對於FW端需求將各種參數提供給FAE或是客戶修改，在FW的程式碼簡單的實作方法就是將你要釋出的參數定義在輸出bin檔中固定位址。<br><img src="/images/FWparameterarea.jpg" alt="parameter area in main app"><br>以下是FW端簡單的實作</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> FW_VER 0x1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> projectname <span class="string">&quot;1234&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> other <span class="string">&quot;321&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INIT_PARAMETER1 100</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INIT_PARAMETER2 200</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> FWver;</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> projectname[<span class="number">32</span>];</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> other[<span class="number">16</span>];</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> parameter1;</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> parameter2;</span><br><span class="line">&#125;FWparameter;</span><br><span class="line"></span><br><span class="line">FWparameter code fwparameter _at_ <span class="number">0x300</span> = &#123;FW_VER,projectname,other,INIT_PARAMETER1,INIT_PARAMETER2&#125;;</span><br></pre></td></tr></table></figure>
-<p>我將參數的位址定義在0x300<br>接下來我要設計一套工具可以修改bin固定的位置，並且我希望UI不需要每次的改動，若要要改動只改動工具中所需要文件，這樣就可以最大化利用UI工具畢竟FW端的參數會依據客戶們的需求不斷更新，如果將描述的部分放在UI工具中會導致當FW端修改新增某的參數時都需要同步修改，如果我們能在開發時就將此需求明確表達UI工具能最少可能的改動，可提升工具部門的效率，但現實層面跨部門的溝通很困難，常常都是各個部門各自為政，你明知道有更好的想法但迫於各種溝通成本導致默不出聲。這也是我想開始寫一些心得分享給大家的動機。<br>回到設計工具程式上，我需要一個主程式專門負責各參數呈現和一份文件能描述參數<br><img src="/images/parameterflow.jpg" alt="TOOL FLOW"></p>
+        <p>今天要來介紹一些FW理架構與簡單的實作出工具，對於大多數公司的IC產品對於客戶需求的差異都會想要最小的改動FW，畢竟如果每一次都需要針對客戶需求修改程式要付出的風險很大，公司也希望自家的產品可以交由FAE只修改參數來滿足客戶需求。因此對於FW端需求將各種參數提供給FAE或是客戶修改，在FW的程式碼簡單的實作方法就是將你要釋出的參數定義在輸出bin檔中固定位址。<br><img src="/images/FWparameterarea.jpg" alt="parameter area in main app"><br>以下是FW端簡單的實作<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> FW_VER 0x1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> projectname <span class="string">&quot;1234&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> other <span class="string">&quot;321&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INIT_PARAMETER1 100</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INIT_PARAMETER2 200</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> FWver;</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> projectname[<span class="number">32</span>];</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> other[<span class="number">16</span>];</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> parameter1;</span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> parameter2;</span><br><span class="line">&#125;FWparameter;</span><br><span class="line"></span><br><span class="line">FWparameter code fwparameter _at_ <span class="number">0x300</span> = &#123;FW_VER,projectname,other,INIT_PARAMETER1,INIT_PARAMETER2&#125;;</span><br></pre></td></tr></table></figure><br>我將參數的位址定義在0x300<br>接下來我要設計一套工具可以修改bin固定的位置，並且我希望UI不需要每次的改動，若要要改動只改動工具中所需要文件，這樣就可以最大化利用UI工具畢竟FW端的參數會依據客戶們的需求不斷更新，如果將描述的部分放在UI工具中會導致當FW端修改新增某的參數時都需要同步修改，如果我們能在開發時就將此需求明確表達UI工具能最少可能的改動，可提升工具部門的效率，但現實層面跨部門的溝通很困難，常常都是各個部門各自為政，你明知道有更好的想法但迫於各種溝通成本導致默不出聲。這也是我想開始寫一些心得分享給大家的動機。<br>回到設計工具程式上，我需要一個主程式專門負責各參數呈現和一份文件能描述參數<br><img src="/images/parameterflow.jpg" alt="TOOL FLOW"></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/jasonchenwork/ParameterTool">我實作的參數小工具連結</a></p>
 <pre><code>載入既有 .bin 固件檔案
 依據 ConfigTable.xlsx 自動解析配置表結構
@@ -516,11 +426,10 @@
 簡單的權限管理（目前僅 admin/admin 可取得完整權限）
 修改後可直接另存為新的 .bin 檔案
 </code></pre>
-
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-5/" data-id="cuidg-UdJHwDQSHFxYjMeI8S8" data-title="那一天我從MCU上學到的(5)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/02/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-5/" data-id="cuidTf3zAhsXHpr2fnUXShEE4" data-title="那一天我從MCU上學到的(5)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -562,7 +471,48 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/12/01/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-4/" data-id="cuidPJAOfoNVscFUw2v6OwZlC" data-title="那一天我從MCU上學到的(4)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/12/01/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-4/" data-id="cuidYopjZRrQ-uejb3hU4dJIp" data-title="那一天我從MCU上學到的(4)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84/" rel="tag">那一天我從MCU上學到的</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-那一天我從MCU上學到的-3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/11/21/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-3/" class="article-date">
+  <time class="dt-published" datetime="2025-11-21T09:01:02.000Z" itemprop="datePublished">2025-11-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/11/21/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-3/">那一天我從MCU上學到的(3)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>上次的issue是數位指令本身的限制，<strong>嚴格說起來不是BUG而是需要在DATASHEET中寫出的限制條件</strong>。<br>這次來說另一種問題，首先敘述一下從客戶端回饋的問題:我司產品在低溫到高溫的過程中功能失效。<br>一開始收到此issue時，第一件事就是想辦法復現客戶的問題啊，不過我們不斷反覆測試後都無法成功復現客戶所遇見的問題，因此我們將此問題轉換成是否有良率問題，不是每一個產品都會發生而是機率性發生在NG品中，後來我們就跟客戶協調是否能將有問題的產品退到我司來排查問題。<br>當我們一拿到客戶產品後我立馬就能復現此問題，能夠復現問題後就可以開始做實驗拉。<br>此時我的大主管要求我修改程式中參數，他猜想靠調整參數就可以解決，當我測試一兩次就發現這不是能靠調整參數的問題，在這情況下我們的產品完全無反應，此時我猜想在這種情況我們的產品是不是能活動，因此修改程式讓程式不管何時都會發送訊息給主機，以此判斷我們的產品是否能此情況下活動。結果不出我預測當我們NG品在低溫下就停止活動了!<br><strong>身為一個工程師當然不能只拿一個程式行為來說話</strong>，此時我使用示波器量測我們產品的行為，因為我們產品在活動時一定會打訊號出來，想當然不出所料低溫時我們的產品根本量不到訊號。最後我將我排查的結果提報給我大主管，而我大主管似乎沒能理解我做的實驗目的與結果，當下只給我下達將程式中某個參數改大一點後去測試。此時我心中只想說無腦服從他即便我花一整天解釋這方向錯誤但我的大主管很高的機率會告知我說:『你改一下參數會死嗎?』當時我只是一介菜鳥工程師所說的話一點都沒有份量即便我做了一堆實驗數據。就在此時剛好有一位資深工程師聽到我跟大主管的對話，立馬跳出來幫忙解釋，我看這位資深工程師講到快跟我們大主管吵架一樣後，終於理解產品可能的問題，之後就是請數位工程師跟我們一起排查問題，配合數位工程師寫一堆測試pattern與量測訊號，最後終於能定位產品中的某的電路因FAB良率問題有可以使我們的產品直接停止內部CLK。通常DEBUG越痛苦越能牢記在大腦，<strong>即便過這麼多年我還是記得當時的情況。每個公司文化都不一樣，沒有好跟壞，我們要做的是去適應去融入各種文化，而非抱怨各種事情，這樣才能使我們更強大!</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jasonchenwork.github.io/2025/11/21/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-3/" data-id="cuidzqAML7g-lk1fONFsEbyFM" data-title="那一天我從MCU上學到的(3)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -594,7 +544,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">標籤</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/" rel="tag">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A6%82%E4%BD%95%E5%84%AA%E5%8C%96%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C%E6%95%88%E7%8E%87/" rel="tag">如何優化程式執行效率</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84/" rel="tag">那一天我從MCU上學到的</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A6%82%E4%BD%95%E5%84%AA%E5%8C%96%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C%E6%95%88%E7%8E%87/" rel="tag">如何優化程式執行效率</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84/" rel="tag">那一天我從MCU上學到的</a></li></ul>
     </div>
   </div>
 
@@ -604,7 +554,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">標籤雲</h3>
     <div class="widget tagcloud">
-      <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/%E5%A6%82%E4%BD%95%E5%84%AA%E5%8C%96%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C%E6%95%88%E7%8E%87/" style="font-size: 10px;">如何優化程式執行效率</a> <a href="/tags/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84/" style="font-size: 20px;">那一天我從MCU上學到的</a>
+      <a href="/tags/%E5%A6%82%E4%BD%95%E5%84%AA%E5%8C%96%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C%E6%95%88%E7%8E%87/" style="font-size: 10px;">如何優化程式執行效率</a> <a href="/tags/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84/" style="font-size: 20px;">那一天我從MCU上學到的</a>
     </div>
   </div>
 
@@ -626,10 +576,6 @@
       <ul>
         
           <li>
-            <a href="/2025/12/30/adaboostfacedection/">ADABOOST Face detection with Haar feature</a>
-          </li>
-        
-          <li>
             <a href="/2025/12/29/%E5%A6%82%E4%BD%95%E5%84%AA%E5%8C%96%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C%E6%95%88%E7%8E%87/">如何優化程式執行效率</a>
           </li>
         
@@ -643,6 +589,10 @@
         
           <li>
             <a href="/2025/12/05/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-9/">那一天我從MCU上學到的(9)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-8/">那一天我從MCU上學到的(8)</a>
           </li>
         
       </ul>
