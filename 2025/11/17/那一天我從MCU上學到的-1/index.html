@@ -6,12 +6,12 @@
   
   <title>那一天我從MCU上學到的(1) | Jason&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="我是在IC設計公司中做十年的韌體工程師，最近想說把以前工作上的經驗做個紀錄，這系列文比較像是雜談主要講一些技術與自己的所見所聞。 我進入的第一間公司是使用組合語言來開發公司產品，組合語言對大多數人來說會感覺很困難，但這間公司是使用比較高階的組合語言語法，舉例來說大多數組合語言的暫存器加法會是這樣:ADD, A,X0,X1; 但這邊的寫法為: A &#x3D; R0+R1 是比較直覺的。第一份工作是使用組合語">
+  <meta name="description" content="我是在IC設計公司中做十年的韌體工程師，最近想說把以前工作上的經驗做個紀錄，這系列文比較像是雜談主要講一些技術與自己的所見所聞。 我進入的第一間公司是使用組合語言來開發公司產品，組合語言對大多數人來說會感覺很困難，但這間公司是使用比較高階的組合語言語法，舉例來說大多數組合語言的暫存器加法會是這樣:ADD, A,X0,X1; 但這邊的寫法為: A &#x3D; R0+R1 是比較直覺的。第一份工作是">
 <meta property="og:type" content="article">
 <meta property="og:title" content="那一天我從MCU上學到的(1)">
 <meta property="og:url" content="https://jasonchenwork.github.io/2025/11/17/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-1/index.html">
 <meta property="og:site_name" content="Jason&#39;s Blog">
-<meta property="og:description" content="我是在IC設計公司中做十年的韌體工程師，最近想說把以前工作上的經驗做個紀錄，這系列文比較像是雜談主要講一些技術與自己的所見所聞。 我進入的第一間公司是使用組合語言來開發公司產品，組合語言對大多數人來說會感覺很困難，但這間公司是使用比較高階的組合語言語法，舉例來說大多數組合語言的暫存器加法會是這樣:ADD, A,X0,X1; 但這邊的寫法為: A &#x3D; R0+R1 是比較直覺的。第一份工作是使用組合語">
+<meta property="og:description" content="我是在IC設計公司中做十年的韌體工程師，最近想說把以前工作上的經驗做個紀錄，這系列文比較像是雜談主要講一些技術與自己的所見所聞。 我進入的第一間公司是使用組合語言來開發公司產品，組合語言對大多數人來說會感覺很困難，但這間公司是使用比較高階的組合語言語法，舉例來說大多數組合語言的暫存器加法會是這樣:ADD, A,X0,X1; 但這邊的寫法為: A &#x3D; R0+R1 是比較直覺的。第一份工作是">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2025-11-17T08:43:52.000Z">
 <meta property="article:modified_time" content="2025-11-20T05:35:10.792Z">
@@ -97,13 +97,13 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>我是在IC設計公司中做十年的韌體工程師，最近想說把以前工作上的經驗做個紀錄，這系列文比較像是雜談主要講一些技術與自己的所見所聞。</p>
-<p>我進入的第一間公司是使用組合語言來開發公司產品，組合語言對大多數人來說會感覺很困難，但這間公司是使用比較高階的組合語言語法，舉例來說大多數組合語言的暫存器加法會是這樣:ADD, A,X0,X1; 但這邊的寫法為: A = R0+R1 是比較直覺的。第一份工作是使用組合語言對我影響很大。當使用組合語言時你會更清楚硬體MCU的運作流程，你會知道如何最佳化程式碼。舉例來說你會知道MCU的乘法指令與除法指令的cycles數與大於簡單的指令ADD/SUB/MOV的cycles數3倍至10倍，要如何讓你的程式跑的更有效率最簡單的辦法就是少用乘法器與除法器指令，能使用Bit shift取代這步驟就盡可能使用。通常我們在使用一些變數時會初始化該變數為0，但在組合語言中我可以直接使用xor 取代 assign 0的行為。現在多數compiler都會自動使用xor取代assign 0。</p>
+<p>我進入的第一間公司是使用組合語言來開發公司產品，組合語言對大多數人來說會感覺很困難，但這間公司是使用比較高階的組合語言語法，舉例來說大多數組合語言的暫存器加法會是這樣:ADD, A,X0,X1; 但這邊的寫法為: A &#x3D; R0+R1 是比較直覺的。第一份工作是使用組合語言對我影響很大。當使用組合語言時你會更清楚硬體MCU的運作流程，你會知道如何最佳化程式碼。舉例來說你會知道MCU的乘法指令與除法指令的cycles數與大於簡單的指令ADD&#x2F;SUB&#x2F;MOV的cycles數3倍至10倍，要如何讓你的程式跑的更有效率最簡單的辦法就是少用乘法器與除法器指令，能使用Bit shift取代這步驟就盡可能使用。通常我們在使用一些變數時會初始化該變數為0，但在組合語言中我可以直接使用xor 取代 assign 0的行為。現在多數compiler都會自動使用xor取代assign 0。</p>
 <p>總結來說以前寫高階程式語言時根本不會知道要如何優化自己的程式碼，因為我們沒有了解編譯器所產生的結果，但如果我們知道組合語言是如何運作就可以知道有多少東西是可以優化的。也因此我第一份工作使用組合語言對我來說能更知道要如何優化程式。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jasonchenwork.github.io/2025/11/17/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-1/" data-id="cuidUUekCIrG6_XQYGjOo217M" data-title="那一天我從MCU上學到的(1)" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://jasonchenwork.github.io/2025/11/17/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-1/" data-id="cuidYBzmy9oZy5BWnmjw4AZGu" data-title="那一天我從MCU上學到的(1)" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -142,7 +142,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">標籤</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A6%82%E4%BD%95%E5%84%AA%E5%8C%96%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C%E6%95%88%E7%8E%87/" rel="tag">如何優化程式執行效率</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84/" rel="tag">那一天我從MCU上學到的</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84/" rel="tag">那一天我從MCU上學到的</a></li></ul>
     </div>
   </div>
 
@@ -152,7 +152,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">標籤雲</h3>
     <div class="widget tagcloud">
-      <a href="/tags/%E5%A6%82%E4%BD%95%E5%84%AA%E5%8C%96%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C%E6%95%88%E7%8E%87/" style="font-size: 10px;">如何優化程式執行效率</a> <a href="/tags/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84/" style="font-size: 20px;">那一天我從MCU上學到的</a>
+      <a href="/tags/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84/" style="font-size: 10px;">那一天我從MCU上學到的</a>
     </div>
   </div>
 
@@ -174,10 +174,6 @@
       <ul>
         
           <li>
-            <a href="/2025/12/29/%E5%A6%82%E4%BD%95%E5%84%AA%E5%8C%96%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C%E6%95%88%E7%8E%87/">如何優化程式執行效率</a>
-          </li>
-        
-          <li>
             <a href="/2025/12/10/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-11/">那一天我從MCU上學到的(11)</a>
           </li>
         
@@ -191,6 +187,10 @@
         
           <li>
             <a href="/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-8/">那一天我從MCU上學到的(8)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-7/">那一天我從MCU上學到的(7)</a>
           </li>
         
       </ul>
