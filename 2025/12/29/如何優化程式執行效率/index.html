@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>如何優化程式執行效率 | Jason&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="我主要分成兩大部分: 硬體 SIMD(Single Instruction, Multiple Data) 多核心&#x2F;Multithead&#x2F;OpenMP GPU&#x2F;CUDA&#x2F;OPENCL  軟體1. 數學   TBD 2. 演算法技巧   可以利用演算法Pattern來加速程式執行效率   例如: Binary Search, Sliding window,DP, prefix sum..etc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何優化程式執行效率">
+<meta property="og:url" content="https://jasonchenwork.github.io/2025/12/29/%E5%A6%82%E4%BD%95%E5%84%AA%E5%8C%96%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C%E6%95%88%E7%8E%87/index.html">
+<meta property="og:site_name" content="Jason&#39;s Blog">
+<meta property="og:description" content="我主要分成兩大部分: 硬體 SIMD(Single Instruction, Multiple Data) 多核心&#x2F;Multithead&#x2F;OpenMP GPU&#x2F;CUDA&#x2F;OPENCL  軟體1. 數學   TBD 2. 演算法技巧   可以利用演算法Pattern來加速程式執行效率   例如: Binary Search, Sliding window,DP, prefix sum..etc">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2025-12-29T09:33:25.000Z">
+<meta property="article:modified_time" content="2025-12-30T01:33:52.258Z">
+<meta property="article:author" content="Jason Chen">
+<meta property="article:tag" content="如何優化程式執行效率">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Jason's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Jason&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜尋"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜尋"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jasonchenwork.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-如何優化程式執行效率" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/12/29/%E5%A6%82%E4%BD%95%E5%84%AA%E5%8C%96%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C%E6%95%88%E7%8E%87/" class="article-date">
+  <time class="dt-published" datetime="2025-12-29T09:33:25.000Z" itemprop="datePublished">2025-12-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      如何優化程式執行效率
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>我主要分成兩大部分:</p>
+<h2 id="硬體"><a href="#硬體" class="headerlink" title="硬體"></a>硬體</h2><ol>
+<li>SIMD(Single Instruction, Multiple Data)</li>
+<li>多核心/Multithead/OpenMP</li>
+<li>GPU/CUDA/OPENCL</li>
+</ol>
+<h2 id="軟體"><a href="#軟體" class="headerlink" title="軟體"></a>軟體</h2><h3 id="1-數學"><a href="#1-數學" class="headerlink" title="1. 數學"></a>1. 數學</h3><p>   TBD</p>
+<h3 id="2-演算法技巧"><a href="#2-演算法技巧" class="headerlink" title="2. 演算法技巧"></a>2. 演算法技巧</h3><p>   可以利用演算法Pattern來加速程式執行效率<br>   例如: Binary Search, Sliding window,DP, prefix sum..etc<br>   看見這些演算法技巧是否很眼熟呢?沒錯在LeetCode題目中這些都是常見的解題技巧。接下來我會陸續更新各種演算法技巧如何應用於影像處理領域上。</p>
+<p>   Binary Search: sqrt()<br>   Prefix sum:  <a target="_blank" rel="noopener" href="https://github.com/jasonchenwork/ImageProcessing/blob/main/md/adaboostfacedetection.md">adaboostfacedetection</a>,  <a target="_blank" rel="noopener" href="https://github.com/jasonchenwork/ImageProcessing/blob/main/md/NLMwithintegrallmage.md">NonLocalMean</a><br>   Sliding windows:  <a target="_blank" rel="noopener" href="https://github.com/jasonchenwork/ImageProcessing/blob/main/md/GaussianBlur.md">StackBlur</a></p>
+<h3 id="3-資料導向設計"><a href="#3-資料導向設計" class="headerlink" title="3. 資料導向設計"></a>3. 資料導向設計</h3><p>   主要概念是將要處理資料盡可能放在連續的記憶體空間來提升記憶體cache hit rate達到提升效率，另一方面如果記憶體連續後比較好配合使用SIMD優化</p>
+<h3 id="4-Strength-Reduction"><a href="#4-Strength-Reduction" class="headerlink" title="4. Strength Reduction"></a>4. Strength Reduction</h3><p>   a. Lookup Table<br>      sin(x), cos(x) 需先建立起table可加速運算但會失去精準度  </p>
+<p>   b. Bit Shift replace of multiplication/division<br>      用bit shift可以有效率高於乘除法</p>
+<h6 id="如果乘數是2-N可調用shift取代"><a href="#如果乘數是2-N可調用shift取代" class="headerlink" title="如果乘數是2^N可調用shift取代"></a>如果乘數是2^N可調用shift取代</h6><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var = var * <span class="number">2</span>;</span><br><span class="line"><span class="comment">// better</span></span><br><span class="line">var &lt;&lt;=<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<h6 id="如果除數是2-N可調用shift取代"><a href="#如果除數是2-N可調用shift取代" class="headerlink" title="如果除數是2^N可調用shift取代"></a>如果除數是2^N可調用shift取代</h6><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">   var = var / <span class="number">2</span>;</span><br><span class="line">   <span class="comment">// better</span></span><br><span class="line">   var &gt;&gt;=<span class="number">1</span>;</span><br><span class="line">```  </span><br><span class="line">  </span><br><span class="line">#####<span class="meta"># swap function</span></span><br><span class="line">  </span><br><span class="line">```C</span><br><span class="line">   <span class="type">void</span> <span class="title function_">swap</span><span class="params">(<span class="type">int</span> *a,<span class="type">int</span> *b)</span></span><br><span class="line">   &#123;</span><br><span class="line">     <span class="type">int</span> tmp;</span><br><span class="line">     tmp = *a;</span><br><span class="line">     *a =*b;</span><br><span class="line">     *b=tmp</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">// better</span></span><br><span class="line">   <span class="type">void</span> swap(<span class="type">int</span> *a,<span class="type">int</span> *b)</span><br><span class="line">   &#123;</span><br><span class="line">     *a^=*b;</span><br><span class="line">     *b^=*a;</span><br><span class="line">     *a^=*b;</span><br><span class="line">   &#125;</span><br><span class="line">```  </span><br><span class="line">  </span><br><span class="line">###### 奇偶數判斷</span><br><span class="line">  </span><br><span class="line">```C</span><br><span class="line"><span class="title function_">if</span><span class="params">(var % <span class="number">2</span>)</span></span><br><span class="line"><span class="comment">//better</span></span><br><span class="line"><span class="title function_">if</span><span class="params">(var &amp; <span class="number">2</span>)</span></span><br></pre></td></tr></table></figure>
+<p>```</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jasonchenwork.github.io/2025/12/29/%E5%A6%82%E4%BD%95%E5%84%AA%E5%8C%96%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C%E6%95%88%E7%8E%87/" data-id="cuidaAY9oc0rXeSO1LzJ_6j30" data-title="如何優化程式執行效率" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A6%82%E4%BD%95%E5%84%AA%E5%8C%96%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C%E6%95%88%E7%8E%87/" rel="tag">如何優化程式執行效率</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2025/12/10/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-11/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">那一天我從MCU上學到的(11)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">標籤</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A6%82%E4%BD%95%E5%84%AA%E5%8C%96%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C%E6%95%88%E7%8E%87/" rel="tag">如何優化程式執行效率</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84/" rel="tag">那一天我從MCU上學到的</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">標籤雲</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/%E5%A6%82%E4%BD%95%E5%84%AA%E5%8C%96%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C%E6%95%88%E7%8E%87/" style="font-size: 10px;">如何優化程式執行效率</a> <a href="/tags/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84/" style="font-size: 20px;">那一天我從MCU上學到的</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">彙整</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/12/">十二月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/11/">十一月 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/12/29/%E5%A6%82%E4%BD%95%E5%84%AA%E5%8C%96%E7%A8%8B%E5%BC%8F%E5%9F%B7%E8%A1%8C%E6%95%88%E7%8E%87/">如何優化程式執行效率</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/10/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-11/">那一天我從MCU上學到的(11)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/08/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-10/">那一天我從MCU上學到的(10)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/05/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-9/">那一天我從MCU上學到的(9)</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/04/%E9%82%A3%E4%B8%80%E5%A4%A9%E6%88%91%E5%BE%9EMCU%E4%B8%8A%E5%AD%B8%E5%88%B0%E7%9A%84-8/">那一天我從MCU上學到的(8)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Jason Chen<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
